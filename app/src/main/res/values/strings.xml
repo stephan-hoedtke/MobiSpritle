@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MobiSpritle</string>
+    <string name="title_home">Home</string>
+    <string name="title_settings">Settings</string>
+    <string name="label_home">Mobile Spirit Level</string>
+    <string name="text_empty" />
+    <string name="label_default_azimuth">0.94829</string>
+    <string name="label_default_roll">.0483</string>
+</resources>
