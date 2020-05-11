@@ -6,4 +6,7 @@
     <string name="text_empty" />
     <string name="label_default_azimuth">0.94829</string>
     <string name="label_default_roll">.0483</string>
+    <string name="label_use_gravity_sensor">Use Gravity Sensor</string>
+    <string name="label_use_rotation_sensor">Use Rotation Sensor</string>
+    <string name="label_save">Save</string>
 </resources>

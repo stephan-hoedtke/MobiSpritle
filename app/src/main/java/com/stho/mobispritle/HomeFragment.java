@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.stho.mobispritle.databinding.HomeFragmentBinding;
 
@@ -53,15 +55,19 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     @Override
     public void onResume() {
         super.onResume();
-        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if (accelerometer != null) {
-            sensorManager.registerListener(this, accelerometer,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+        if (viewModel.getSettings().useGravitySensor() || viewModel.getSettings().useRotationSensor()) {
+            Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            if (accelerometer != null) {
+                sensorManager.registerListener(this, accelerometer,
+                        SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_FASTEST);
+            }
         }
-        Sensor magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        if (magneticField != null) {
-            sensorManager.registerListener(this, magneticField,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+        if (viewModel.getSettings().useRotationSensor()) {
+            Sensor magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+            if (magneticField != null) {
+                sensorManager.registerListener(this, magneticField,
+                        SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_FASTEST);
+            }
         }
     }
 
@@ -87,20 +93,21 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         // ignore
     }
 
+    @SuppressWarnings("ConstantConditions")
+    private NavController findNavController() {
+        return Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+    }
+
     // Compute the three orientation angles based on the most recent readings from
     // the device's accelerometer and magnetometer.
     private void updateOrientationAngles() {
-        SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
-        SensorManager.getOrientation(rotationMatrix, orientationAngles);
-        if (isPortrait()) {
-            viewModel.setAzimuth(orientationAngles[0]);
-            viewModel.setPitch(orientationAngles[1]);
-            viewModel.setRoll(orientationAngles[2]);
+        if (viewModel.getSettings().useGravitySensor()) {
+            getOrientation(accelerometerReading, orientationAngles);
+            viewModel.update(orientationAngles, isPortrait());
         }
-        else {
-            viewModel.setAzimuth(orientationAngles[0]);
-            viewModel.setPitch(orientationAngles[2]);
-            viewModel.setRoll(-orientationAngles[1]);
+        if (viewModel.getSettings().useRotationSensor()) {
+            getOrientation(accelerometerReading, magnetometerReading, orientationAngles);
+            viewModel.update(orientationAngles, isPortrait());
         }
     }
 
@@ -110,19 +117,30 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     }
 
     private void updateAzimuthUI(float pitch) {
-        binding.textViewAzimuth.setText(HomeViewModel.toString(pitch));
+        binding.textViewAzimuth.setText(Formatter.toAngleString(pitch));
     }
 
     private void updatePitchUI(float pitch) {
-        binding.textViewPitch.setText(HomeViewModel.toString(pitch));
+        binding.textViewPitch.setText(Formatter.toAngleString(pitch));
     }
 
     private void updateRollUI(float roll) {
-        binding.textViewRoll.setText(HomeViewModel.toString(roll));
+        binding.textViewRoll.setText(Formatter.toAngleString(roll));
     }
 
     private void translate(double translationFactor) {
         int dx = (int) (-translationFactor * binding.levelBubble.getWidth());
         binding.levelBubble.setTranslationX(dx);
+    }
+
+    private void getOrientation(float[] accelerometerReading, float[] orientationAngles) {
+        orientationAngles[0] = 0f;
+        orientationAngles[1] = -(float)Math.atan2(accelerometerReading[1], accelerometerReading[2]);
+        orientationAngles[2] = -(float)Math.atan2(accelerometerReading[0], accelerometerReading[2]);
+    }
+
+    private void getOrientation(float[] accelerometerReading, float[] magnetometerReading, float[] orientationAngles) {
+        SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
+        SensorManager.getOrientation(rotationMatrix, orientationAngles);
     }
 }
