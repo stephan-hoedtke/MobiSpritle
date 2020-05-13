@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="normalMargin">11dp</dimen>
+    <dimen name="largeMargin">23dp</dimen>
     <dimen name="normalText">18sp</dimen>
     <dimen name="largeText">26sp</dimen>
 </resources>

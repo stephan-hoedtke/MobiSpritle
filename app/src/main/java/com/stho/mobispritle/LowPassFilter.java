@@ -1,19 +1,17 @@
 package com.stho.mobispritle;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.os.SystemClock;
 
-
-public class LowPassFilter {
+class LowPassFilter {
 
     private final Vector gravity = new Vector();
-    private float startTime = System.nanoTime();
-    private float time = System.nanoTime();
-    private float count = 0;
+    private long startTimeNanos;
+    private float count;
 
     LowPassFilter() {
-        this.setAcceleration(new float[]{0.1f, 0.2f, 9.78f});
+        startTimeNanos = SystemClock.elapsedRealtimeNanos();
+        count = 0;
+        setAcceleration(new float[]{0f, 0f, 9.78f});
     }
 
     Vector setAcceleration(float[] acceleration) {
@@ -35,16 +33,15 @@ public class LowPassFilter {
         }
     }
 
-    private static final float NANOSECONDS = 1000000000.0f;
+    private static final float NANOSECONDS = 1000000000f;
 
     private float getAverageTimeDifferenceInSeconds() {
-        System.nanoTime();
         if (count < 2) {
             count = 2;
             return 0;
         } else {
-            float newTime = System.nanoTime();
-            return (newTime - startTime) / NANOSECONDS / count++;
+            long nanos = SystemClock.elapsedRealtimeNanos() - startTimeNanos;
+            return nanos / count++ / NANOSECONDS;
         }
     }
 }

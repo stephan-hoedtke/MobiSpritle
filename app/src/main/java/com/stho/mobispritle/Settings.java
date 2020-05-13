@@ -1,12 +1,14 @@
 package com.stho.mobispritle;
 
-public class Settings {
+class Settings {
 
     private boolean useGravity = true;
     private boolean useRotation = false;
+    private boolean useAcceleration = true;
 
     boolean useGravitySensor() { return useGravity; }
     boolean useRotationSensor() { return useRotation; }
+    boolean useAcceleration() { return useAcceleration; }
 
     void setUseGravity(boolean value) {
         useGravity = value;
@@ -14,4 +16,5 @@ public class Settings {
     void setUseRotation(boolean value) {
         useRotation = value;
     }
+    void setUseAcceleration(boolean value) { useAcceleration = value; }
 }

@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,12 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     private HomeViewModel viewModel;
     private HomeFragmentBinding binding;
     private SensorManager sensorManager;
+    private final Handler handler = new Handler();
     private final float[] accelerometerReading = new float[3];
     private final float[] magnetometerReading = new float[3];
     private final float[] rotationMatrix = new float[9];
     private final float[] orientationAngles = new float[3];
+    private boolean isPortrait;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -47,11 +50,13 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         viewModel.getAzimuthLD().observe(getViewLifecycleOwner(), this::updateAzimuthUI);
         viewModel.getPitchLD().observe(getViewLifecycleOwner(), this::updatePitchUI);
         viewModel.getRollLD().observe(getViewLifecycleOwner(), this::updateRollUI);
+        viewModel.getAngleLD().observe(getViewLifecycleOwner(), this::updateAngleUI);
         viewModel.getTranslationFactorLD().observe(getViewLifecycleOwner(), this::translate);
+        isPortrait = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
         return binding.getRoot();
     }
 
-    @SuppressWarnings("ConstantConditions")
+
     @Override
     public void onResume() {
         super.onResume();
@@ -69,23 +74,41 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                         SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_FASTEST);
             }
         }
+        initializeHandler();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
+        removeHandler();
     }
 
+    private static final int HANDLER_DELAY = 100;
+
+    private void initializeHandler() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                viewModel.updateAngle();
+                handler.postDelayed(this, HANDLER_DELAY);
+            }
+        }, HANDLER_DELAY);
+    }
+
+    private void removeHandler() {
+        handler.removeCallbacksAndMessages(null);
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             System.arraycopy(event.values, 0, accelerometerReading,0, accelerometerReading.length);
+            updateOrientationAngles();
         } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             System.arraycopy(event.values, 0, magnetometerReading,0, magnetometerReading.length);
+            updateOrientationAngles();
         }
-        updateOrientationAngles();
     }
 
     @Override
@@ -103,17 +126,12 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     private void updateOrientationAngles() {
         if (viewModel.getSettings().useGravitySensor()) {
             getOrientation(accelerometerReading, orientationAngles);
-            viewModel.update(orientationAngles, isPortrait());
+            viewModel.update(orientationAngles, isPortrait);
         }
         if (viewModel.getSettings().useRotationSensor()) {
             getOrientation(accelerometerReading, magnetometerReading, orientationAngles);
-            viewModel.update(orientationAngles, isPortrait());
+            viewModel.update(orientationAngles, isPortrait);
         }
-    }
-
-    private boolean isPortrait() {
-        int orientation = getResources().getConfiguration().orientation;
-        return orientation != Configuration.ORIENTATION_LANDSCAPE;
     }
 
     private void updateAzimuthUI(float pitch) {
@@ -126,6 +144,10 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
     private void updateRollUI(float roll) {
         binding.textViewRoll.setText(Formatter.toAngleString(roll));
+    }
+
+    private void updateAngleUI(float angle) {
+        binding.headline.setText(Formatter.toAngleString(angle));
     }
 
     private void translate(double translationFactor) {

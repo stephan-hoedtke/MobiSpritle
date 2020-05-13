@@ -7,21 +7,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.stho.mobispritle.databinding.SettingsFragmentBinding;
 
 public class SettingsFragment extends Fragment {
 
     private SettingsViewModel viewModel;
     private SettingsFragmentBinding binding;
-
-    public static SettingsFragment newInstance() {
-        return new SettingsFragment();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +33,7 @@ public class SettingsFragment extends Fragment {
         binding.buttonSave.setOnClickListener(view -> save());
         binding.switchUseGravity.setChecked(viewModel.getSettings().useGravitySensor());
         binding.switchUseRotation.setChecked(viewModel.getSettings().useRotationSensor());
+        binding.switchUseAcceleration.setChecked(viewModel.getSettings().useAcceleration());
         return binding.getRoot();
     }
 
@@ -44,9 +43,25 @@ public class SettingsFragment extends Fragment {
     }
 
     private void save() {
-        viewModel.getSettings().setUseGravity(binding.switchUseGravity.isChecked());
-        viewModel.getSettings().setUseRotation(binding.switchUseRotation.isChecked());
-        viewModel.save();
-        findNavController().navigateUp();
+        try {
+            viewModel.getSettings().setUseGravity(binding.switchUseGravity.isChecked());
+            viewModel.getSettings().setUseRotation(binding.switchUseRotation.isChecked());
+            viewModel.getSettings().setUseAcceleration(binding.switchUseAcceleration.isChecked());
+            viewModel.save();
+            findNavController().navigateUp();
+        }
+        catch (Exception ex) {
+            showExceptionSnackBar(ex.getMessage());
+        }
     }
+
+    @SuppressWarnings("ConstantConditions")
+    private void showExceptionSnackBar(final String exception) {
+        View container = getActivity().findViewById(R.id.container);
+        Snackbar snackbar = Snackbar.make(container, exception, Snackbar.LENGTH_LONG);
+        snackbar.setBackgroundTint(ContextCompat.getColor(getContext(), R.color.colorSecondaryDark));
+        snackbar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorSecondaryText));
+        snackbar.show();
+    }
+
 }
