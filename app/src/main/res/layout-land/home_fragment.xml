@@ -50,7 +50,6 @@
             app:layout_constraintGuide_percent="0.8"
             />
 
-
         <TextView
             android:id="@+id/headline"
             android:layout_width="match_parent"
@@ -69,7 +68,6 @@
             android:src="@drawable/level_glass"
             app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
             app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
-            android:layout_margin="@dimen/normalMargin"
             android:contentDescription="@string/text_empty" />
 
         <ImageView
@@ -79,7 +77,6 @@
             android:src="@drawable/level_bubble"
             app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
             app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
-            android:layout_margin="@dimen/normalMargin"
             android:translationX="0dp"
             android:contentDescription="@string/text_empty" />
 
@@ -90,7 +87,6 @@
             android:src="@drawable/level_marks"
             app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
             app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
-            android:layout_margin="@dimen/normalMargin"
             android:contentDescription="@string/text_empty" />
 
         <TextView

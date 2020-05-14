@@ -33,7 +33,6 @@ public class SettingsFragment extends Fragment {
         binding.buttonSave.setOnClickListener(view -> save());
         binding.switchUseGravity.setChecked(viewModel.getSettings().useGravitySensor());
         binding.switchUseRotation.setChecked(viewModel.getSettings().useRotationSensor());
-        binding.switchUseAcceleration.setChecked(viewModel.getSettings().useAcceleration());
         return binding.getRoot();
     }
 
@@ -46,7 +45,6 @@ public class SettingsFragment extends Fragment {
         try {
             viewModel.getSettings().setUseGravity(binding.switchUseGravity.isChecked());
             viewModel.getSettings().setUseRotation(binding.switchUseRotation.isChecked());
-            viewModel.getSettings().setUseAcceleration(binding.switchUseAcceleration.isChecked());
             viewModel.save();
             findNavController().navigateUp();
         }

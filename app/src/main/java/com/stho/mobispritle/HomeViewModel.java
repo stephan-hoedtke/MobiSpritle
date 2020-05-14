@@ -52,36 +52,22 @@ public class HomeViewModel extends AndroidViewModel {
         return repository.getSettings();
     }
 
-    void update(float[] acceleration, boolean isPortrait) {
-
-        Vector gravity = lowPassFilter.setAcceleration(acceleration);
-
+    void update(float[] orientationAngles, boolean isPortrait) {
+        Vector gravity = lowPassFilter.setAcceleration(orientationAngles);
         azimuthLiveData.postValue(gravity.x);
         pitchLiveData.postValue(gravity.y);
         rollLiveData.postValue(gravity.z);
-
         if (isPortrait) {
-            setAngle(gravity.z);
+            acceleration.update(gravity.z);
         }
         else {
-            setAngle(-gravity.y);
-        }
-    }
-
-    private void setAngle(float angle) {
-        if (getSettings().useAcceleration()) {
-            acceleration.update(angle);
-        }
-        else {
-            angleLiveData.postValue(angle);
+            acceleration.update(-gravity.y);
         }
     }
 
     void updateAngle() {
-        if (getSettings().useAcceleration()) {
-            double angle = acceleration.getPosition();
-            angleLiveData.postValue((float)angle);
-        }
+        double angle = acceleration.getPosition();
+        angleLiveData.postValue((float)angle);
     }
 
     private double getTranslationFactor(float roll) {

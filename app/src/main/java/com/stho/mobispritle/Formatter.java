@@ -16,6 +16,6 @@ class Formatter {
 
     static String toAngleString(float value) {
         String sign = (value < 0) ? "-" : "+";
-        return sign + String.format(Locale.ENGLISH, "%.1f", Math.abs(value * 180 / Math.PI));
+        return sign + String.format(Locale.ENGLISH, "%.1f°", Math.abs(value * 180 / Math.PI));
     }
 }

@@ -21,10 +21,12 @@ class Acceleration {
     private double c;
     private double d;
     private long t0;
+    private double factor;
 
     private static final double NANOSECONDS_PER_SECOND = 1000000000;
 
     Acceleration() {
+        factor = 1.0 / 0.7 / NANOSECONDS_PER_SECOND;
         v0 = 0;
         s0 = 0;
         s1 = 0;
@@ -51,7 +53,7 @@ class Acceleration {
 
     private double getTime(long elapsedRealtimeNanos) {
         long nanos = elapsedRealtimeNanos - t0;
-        return (double) nanos / NANOSECONDS_PER_SECOND;
+        return factor * nanos;
     }
 
     private void calculateFormula() {

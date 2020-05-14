@@ -1,8 +1,11 @@
 package com.stho.mobispritle;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by shoedtke on 23.12.2015.
  */
+@SuppressWarnings("WeakerAccess")
 public class Vector {
     public float x;
     public float y;
@@ -29,6 +32,7 @@ public class Vector {
         this.z = values[2];
     }
 
+    @NotNull
     public Vector clone() {
         return new Vector(this.x, this.y, this.z);
     }
