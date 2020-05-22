@@ -79,22 +79,24 @@
 
         <ImageView
             android:id="@+id/level_glas"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/level_glass"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
             app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:contentDescription="@string/text_empty" />
 
         <ImageView
             android:id="@+id/level_bubble"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/level_bubble"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
             app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:translationX="0dp"
@@ -102,11 +104,12 @@
 
         <ImageView
             android:id="@+id/level_marks"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/level_marks"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
             app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:contentDescription="@string/text_empty" />
