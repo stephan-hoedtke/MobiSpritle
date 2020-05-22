@@ -35,18 +35,34 @@
             />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/horizontal_guideline1"
+            android:id="@+id/horizontal_guideline_top"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_guideline_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.95"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_guideline_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
             app:layout_constraintGuide_percent="0.2"
             />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/horizontal_guideline2"
+            android:id="@+id/vertical_guideline_end"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8"
             />
 
@@ -55,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline1"
+            android:layout_margin="@dimen/largeText"
             android:textAlignment="center"
             android:textColor="@color/colorBackgroundText"
             android:textSize="30sp"
@@ -66,8 +82,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/level_glass"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
+            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
+            app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:contentDescription="@string/text_empty" />
 
         <ImageView
@@ -75,8 +93,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/level_bubble"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
+            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
+            app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:translationX="0dp"
             android:contentDescription="@string/text_empty" />
 
@@ -85,8 +105,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/level_marks"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
+            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
+            app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:contentDescription="@string/text_empty" />
 
         <TextView

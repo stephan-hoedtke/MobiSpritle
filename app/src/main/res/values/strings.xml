@@ -10,4 +10,6 @@
     <string name="label_use_rotation_sensor">Use Rotation Sensor</string>
     <string name="label_save">Save</string>
     <string name="label_use_acceleration">Use Acceleration</string>
+    <string name="label_digital_display">Digital Display</string>
+    <string name="label_display_acceleration_vector">Display Acceleration Vector</string>
 </resources>

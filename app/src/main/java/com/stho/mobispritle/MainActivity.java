@@ -7,6 +7,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -24,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = findNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            findNavController().navigateUp();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private NavController findNavController() {

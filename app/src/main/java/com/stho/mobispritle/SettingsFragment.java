@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -30,9 +33,15 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.settings_fragment, container, false);
-        binding.buttonSave.setOnClickListener(view -> save());
         binding.switchUseGravity.setChecked(viewModel.getSettings().useGravitySensor());
         binding.switchUseRotation.setChecked(viewModel.getSettings().useRotationSensor());
+        binding.switchShowDigital.setChecked(viewModel.getSettings().showDigital());
+        binding.switchShowAccelerationVector.setChecked(viewModel.getSettings().showAccelerationVector());
+        binding.switchUseGravity.setOnCheckedChangeListener((compoundButton, b) -> save());
+        binding.switchUseRotation.setOnCheckedChangeListener((compoundButton, b) -> save());
+        binding.switchShowDigital.setOnCheckedChangeListener((compoundButton, b) -> save());
+        binding.switchShowAccelerationVector.setOnCheckedChangeListener((compoundButton, b) -> save());
+        updateActionBar();
         return binding.getRoot();
     }
 
@@ -45,12 +54,20 @@ public class SettingsFragment extends Fragment {
         try {
             viewModel.getSettings().setUseGravity(binding.switchUseGravity.isChecked());
             viewModel.getSettings().setUseRotation(binding.switchUseRotation.isChecked());
+            viewModel.getSettings().setShowDigital(binding.switchShowDigital.isChecked());
+            viewModel.getSettings().setShowAccelerationVector(binding.switchShowAccelerationVector.isChecked());
             viewModel.save();
-            findNavController().navigateUp();
         }
         catch (Exception ex) {
             showExceptionSnackBar(ex.getMessage());
         }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void updateActionBar() {
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -61,5 +78,4 @@ public class SettingsFragment extends Fragment {
         snackbar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorSecondaryText));
         snackbar.show();
     }
-
 }

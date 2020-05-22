@@ -7,8 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
-        android:keepScreenOn="true"
-        >
+        android:keepScreenOn="true">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideline1"
@@ -35,7 +34,7 @@
             />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/horizontal_guideline1"
+            android:id="@+id/horizontal_guideline_top"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
@@ -43,20 +42,35 @@
             />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/horizontal_guideline2"
+            android:id="@+id/horizontal_guideline_bottom"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.8"
             />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_guideline_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_guideline_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95"
+            />
 
         <TextView
             android:id="@+id/headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline1"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_top"
             android:textAlignment="center"
             android:textColor="@color/colorBackgroundText"
             android:textSize="30sp"
@@ -64,33 +78,36 @@
 
         <ImageView
             android:id="@+id/level_glas"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/level_glass"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
-            android:layout_margin="@dimen/normalMargin"
+            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
+            app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:contentDescription="@string/text_empty" />
 
         <ImageView
             android:id="@+id/level_bubble"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/level_bubble"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
-            android:layout_margin="@dimen/normalMargin"
+            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
+            app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:translationX="0dp"
             android:contentDescription="@string/text_empty" />
 
         <ImageView
             android:id="@+id/level_marks"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/level_marks"
-            app:layout_constraintTop_toTopOf="@id/horizontal_guideline1"
-            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline2"
-            android:layout_margin="@dimen/normalMargin"
+            app:layout_constraintTop_toTopOf="@id/horizontal_guideline_top"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_bottom"
+            app:layout_constraintStart_toStartOf="@id/vertical_guideline_start"
+            app:layout_constraintEnd_toEndOf="@id/vertical_guideline_end"
             android:contentDescription="@string/text_empty" />
 
         <TextView

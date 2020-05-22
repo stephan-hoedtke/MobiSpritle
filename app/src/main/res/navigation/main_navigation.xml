@@ -11,6 +11,9 @@
         android:name="com.stho.mobispritle.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_settings"
+            app:destination="@id/navigation_settings" />
     </fragment>
 
     <fragment

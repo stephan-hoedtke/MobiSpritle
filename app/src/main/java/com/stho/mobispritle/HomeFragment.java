@@ -56,7 +56,6 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         return binding.getRoot();
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -75,6 +74,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
             }
         }
         initializeHandler();
+        updateDisplay();
     }
 
     @Override
@@ -82,6 +82,13 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         super.onPause();
         sensorManager.unregisterListener(this);
         removeHandler();
+    }
+
+    private void updateDisplay() {
+        binding.headline.setVisibility(viewModel.getSettings().showDigital() ? View.VISIBLE : View.INVISIBLE);
+        binding.textViewAzimuth.setVisibility(viewModel.getSettings().showAccelerationVector() ? View.VISIBLE : View.INVISIBLE);
+        binding.textViewPitch.setVisibility(viewModel.getSettings().showAccelerationVector() ? View.VISIBLE : View.INVISIBLE);
+        binding.textViewRoll.setVisibility(viewModel.getSettings().showAccelerationVector() ? View.VISIBLE : View.INVISIBLE);
     }
 
     private static final int HANDLER_DELAY = 100;
