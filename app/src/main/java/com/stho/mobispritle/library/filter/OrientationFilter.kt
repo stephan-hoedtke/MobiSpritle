@@ -2,10 +2,7 @@ package com.stho.mobispritle.library.filter
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import com.stho.mobispritle.library.algebra.Orientation
 import com.stho.mobispritle.library.algebra.Quaternion
-import com.stho.mobispritle.library.algebra.RotationMatrix
 import kotlin.math.abs
 
 

@@ -1,4 +1,4 @@
-package com.stho.myorientation.library
+package com.stho.mobispritle.library
 
 import android.content.Context
 import android.hardware.Sensor
@@ -16,7 +16,7 @@ import com.stho.mobispritle.library.filter.IOrientationFilter
 import java.lang.Exception
 
 
-class OrientationSensorListener(private val context: Context, private var filter: IOrientationFilter) : SensorEventListener {
+class OrientationSensorListener(context: Context, private var filter: IOrientationFilter) : SensorEventListener {
 
     private val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val windowManager: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -127,8 +127,7 @@ class OrientationSensorListener(private val context: Context, private var filter
         }
         val rotationMatrix = FloatArray(9)
         if (SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading)) {
-            val matrix: RotationMatrix = RotationMatrix.fromFloatArray(getAdjustedRotationMatrix(rotationMatrix))
-            return Quaternion.fromRotationMatrix(matrix)
+            return RotationMatrix.fromFloatArray(getAdjustedRotationMatrix(rotationMatrix)).toQuaternion()
         }
         return null
     }

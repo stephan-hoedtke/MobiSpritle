@@ -3,12 +3,11 @@ package com.stho.mobispritle.ui.home
 import com.stho.mobispritle.Mode
 import com.stho.mobispritle.library.algebra.Quaternion
 import com.stho.mobispritle.library.algebra.Vector
-import com.stho.myorientation.library.algebra.Degree
-import kotlin.math.abs
+import com.stho.mobispritle.library.algebra.Degree
 
 class BubbleCalculator(quaternion: Quaternion) {
 
-    val g = Vector(0.0, 0.0, -1.0).rotateBy(quaternion.conjugate())
+    private val g = Vector(0.0, 0.0, -1.0).rotateBy(quaternion.conjugate())
 
     fun getForceMode(): Mode? {
         val x2 by lazy { g.x * g.x }

@@ -1,82 +1,71 @@
-package com.stho.mobispritle;
+package com.stho.mobispritle
 
-import android.animation.Animator;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.View;
+import android.animation.Animator
+import android.os.Handler
+import android.os.Looper
+import android.view.View
 
-public class ViewAnimation {
-    private final View view;
-    private final Handler handler = new Handler(Looper.getMainLooper());
+class ViewAnimation private constructor(private val view: View) {
 
-    public static ViewAnimation build(View view) {
-        return new ViewAnimation(view);
+    private val handler = Handler(Looper.getMainLooper())
+
+    fun cleanup() {
+        handler.removeCallbacksAndMessages(null)
     }
 
-    public void cleanup() {
-        handler.removeCallbacksAndMessages(null);
+    fun show() {
+        handler.removeCallbacksAndMessages(null)
+        handler.postDelayed({ fadeIn() }, FADE_IN_DELAY.toLong())
     }
 
-    private ViewAnimation(View view) {
-        this.view = view;
-        hide();
+    fun dismiss() {
+        handler.removeCallbacksAndMessages(null)
+        handler.postDelayed({ fadeOut() }, FADE_OUT_DELAY.toLong())
     }
 
-    public void show() {
-        handler.removeCallbacksAndMessages(null);
-        handler.postDelayed(this::fadeIn, FADE_IN_DELAY);
-    }
-
-    public void dismiss() {
-        handler.removeCallbacksAndMessages(null);
-        handler.postDelayed(this::fadeOut, FADE_OUT_DELAY);
-    }
-
-    public void hide() {
-        view.setVisibility(View.INVISIBLE);
-        view.setAlpha(0f);
-    }
-
-    private void fadeIn() {
-        view.setVisibility(View.VISIBLE);
+    private fun fadeIn() {
+        view.visibility = View.VISIBLE
         view.animate()
-                .alpha(1f)
-                .setDuration(FADE_IN_DURATION)
-                .setListener(null);
-
+            .alpha(1f)
+            .setDuration(FADE_IN_DURATION.toLong())
+            .setListener(null)
     }
 
-    private void fadeOut() {
-        view.setVisibility(View.VISIBLE);
+    private fun fadeOut() {
+        view.visibility = View.VISIBLE
         view.animate()
-                .alpha(0f)
-                .setDuration(FADE_OUT_DURATION)
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        // ignore
-                    }
+            .alpha(0f)
+            .setDuration(FADE_OUT_DURATION.toLong())
+            .setListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                    // ignore
+                }
 
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        view.setVisibility(View.INVISIBLE);
-                    }
+                override fun onAnimationEnd(animation: Animator) {
+                    view.visibility = View.INVISIBLE
+                }
 
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        // ignore
-                    }
+                override fun onAnimationCancel(animation: Animator) {
+                    // ignore
+                }
 
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-                        // ignore
-                    }
-                });
+                override fun onAnimationRepeat(animation: Animator) {
+                    // ignore
+                }
+            })
     }
 
-    private static final int FADE_IN_DELAY = 10;
-    private static final int FADE_IN_DURATION = 500;
-    private static final int FADE_OUT_DELAY = 300;
-    private static final int FADE_OUT_DURATION = 500;
+    companion object {
+        fun build(view: View): ViewAnimation {
+            return ViewAnimation(view).also {
+                view.visibility = View.INVISIBLE
+                view.alpha = 0f
+            }
+        }
 
+        private const val FADE_IN_DELAY = 10
+        private const val FADE_IN_DURATION = 500
+        private const val FADE_OUT_DELAY = 300
+        private const val FADE_OUT_DURATION = 500
+    }
 }

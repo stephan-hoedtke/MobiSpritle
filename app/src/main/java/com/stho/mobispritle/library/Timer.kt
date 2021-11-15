@@ -1,4 +1,4 @@
-package com.stho.myorientation.library
+package com.stho.mobispritle.library
 
 
 class Timer {
@@ -10,13 +10,6 @@ class Timer {
      */
     fun reset() {
         startTime = timeSource.elapsedRealtimeSeconds
-    }
-
-    /**
-     * Return elapsed time (since last start time) in seconds
-     */
-    fun getTime(): Double {
-        return timeSource.elapsedRealtimeSeconds - startTime
     }
 
     /**

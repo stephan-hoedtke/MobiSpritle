@@ -11,7 +11,7 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.util.AttributeSet
 import android.view.View
-import com.stho.myorientation.library.algebra.Degree
+import com.stho.mobispritle.library.algebra.Degree
 import kotlin.math.atan2
 import kotlin.math.roundToInt
 
@@ -56,9 +56,6 @@ class BubbleView : View {
     }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
-        setupGestureDetector()
-    }
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int, defStyleRes: Int) : super(context, attrs, defStyle, defStyleRes) {
         setupGestureDetector()
     }
 
@@ -151,7 +148,7 @@ class BubbleView : View {
     }
 
     private fun ensureMatrix(): Matrix
-        = transformation ?: onCreate(context);
+        = transformation ?: onCreate(context)
 
 
     override fun onDraw(canvas: Canvas) {
@@ -221,10 +218,10 @@ class BubbleView : View {
         val size = width.coerceAtMost(height)
         ring = createBitmap(context, R.drawable.level_ring, size)
         glass = createBitmap(context, R.drawable.level_glass, size)
-        marks = createBitmap(context, R.drawable.level_marks, size);
-        bubbleTop = createBitmap(context, R.drawable.level_bubble_top, size);
-        bubbleMiddle = createBitmap(context, R.drawable.level_bubble_middle, size);
-        transformation = Matrix();
+        marks = createBitmap(context, R.drawable.level_marks, size)
+        bubbleTop = createBitmap(context, R.drawable.level_bubble_top, size)
+        bubbleMiddle = createBitmap(context, R.drawable.level_bubble_middle, size)
+        transformation = Matrix()
         return transformation!!
     }
 

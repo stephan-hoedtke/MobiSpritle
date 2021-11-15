@@ -8,11 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.stho.mobispritle.BubbleView
 import com.stho.mobispritle.Mode
-import com.stho.mobispritle.R
 import com.stho.mobispritle.ViewAnimation
 import com.stho.mobispritle.databinding.FragmentHomeBinding
-import com.stho.mobispritle.library.algebra.Vector
-import com.stho.myorientation.library.OrientationSensorListener
+import com.stho.mobispritle.library.OrientationSensorListener
 
 class HomeFragment : Fragment() {
 
@@ -38,7 +36,7 @@ class HomeFragment : Fragment() {
         })
         binding.bubble.setOnRotateListener(object : BubbleView.OnRotateListener {
             override fun onRotate(delta: Double) {
-                homeViewModel.rotate(-delta);
+                homeViewModel.rotate(-delta)
             }
 
         })
@@ -58,6 +56,8 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         sensorListener.onPause()
+        infoAnimation.cleanup()
+        resetButtonAnimation.cleanup()
     }
 
     override fun onResume() {
@@ -84,9 +84,17 @@ class HomeFragment : Fragment() {
         binding.bubble.setRingAngle(angle)
     }
 
-    private fun keepMode(state: HomeViewModel.State, mode: Mode?): Boolean =
-        mode?.let {
-            if (it == state.mode) {
+    private fun onObserveState(state: HomeViewModel.State) {
+        val calculator = BubbleCalculator(state.quaternion)
+        if (canStillUsePreviousMode(previousMode = state.mode, newMode = calculator.getForceMode())) {
+            val gamma = calculator.getGamma(state.mode, state.alpha)
+            onUpdate(state.mode, gamma)
+        }
+    }
+
+    private fun canStillUsePreviousMode(previousMode: Mode, newMode: Mode?): Boolean =
+        newMode?.let {
+            if (it == previousMode) {
                 true
             } else {
                 homeViewModel.setMode(it)
@@ -94,15 +102,7 @@ class HomeFragment : Fragment() {
             }
         } ?: true
 
-    private fun onObserveState(state: HomeViewModel.State) {
-        val calculator = BubbleCalculator(state.quaternion)
-        if (keepMode(state, calculator.getForceMode())) {
-            val gamma = calculator.getGamma(state.mode, state.alpha)
-            onUpdate(state.mode, gamma, calculator.g)
-        }
-    }
-
-    private fun onUpdate(mode: Mode, gamma: Double, g: Vector) {
+    private fun onUpdate(mode: Mode, gamma: Double) {
         when (mode) {
             Mode.Portrait -> {
                 binding.bubble.apply {
@@ -153,13 +153,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        binding.debugInfo.text = getString(R.string.label_debug_info_params,
-            mode.toString(),
-            g.x,
-            g.y,
-            g.z,
-            gamma
-        )
         onUpdateRotation(mode)
     }
 

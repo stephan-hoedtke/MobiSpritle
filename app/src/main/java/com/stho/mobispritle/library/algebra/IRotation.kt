@@ -1,4 +1,4 @@
-package com.stho.myorientation.library.algebra
+package com.stho.mobispritle.library.algebra
 
 
 interface IRotation {

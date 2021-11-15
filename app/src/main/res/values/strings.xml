@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">Mobile Spirit Level</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="label_info">Info</string>
-    <string name="label_debug_info">DEBUG INFO</string>
-    <string name="label_debug_info_params">%s \nx=%.2f \ny=%.2f \nz=%.2f \ngamma=%.2f°</string>
     <string name="label_target">Target</string>
     <string name="label_reset">Reset</string>
+    <string name="label_info">Info</string>
 </resources>

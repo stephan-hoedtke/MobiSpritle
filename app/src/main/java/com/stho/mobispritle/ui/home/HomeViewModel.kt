@@ -2,13 +2,10 @@ package com.stho.mobispritle.ui.home
 
 import androidx.lifecycle.*
 import com.stho.mobispritle.Mode
-import com.stho.mobispritle.library.algebra.Orientation
 import com.stho.mobispritle.library.algebra.Quaternion
-import com.stho.mobispritle.library.algebra.RotationMatrix
-import com.stho.mobispritle.library.algebra.Vector
 import com.stho.mobispritle.library.filter.IOrientationFilter
 import com.stho.mobispritle.library.filter.OrientationFilter
-import com.stho.myorientation.library.algebra.Degree
+import com.stho.mobispritle.library.algebra.Degree
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -62,7 +59,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun rotate(deltaInDegree: Double) {
-        val degree: Double = Degree.normalize(assureValueOrAssumeZero(ringAngleLiveData.value) - deltaInDegree)
+        val degree: Double = Degree.normalize(currentRingAngle - deltaInDegree)
         ringAngleLiveData.value = degree
     }
 
@@ -71,10 +68,4 @@ class HomeViewModel : ViewModel() {
             modeLiveData.postValue(value)
         }
     }
-
-    private fun assureValueOrAssumeZero(value: Double?): Double =
-        value ?: 0.0
-
-    private fun assureValueOrAssumeTrue(value: Boolean?): Boolean =
-        value ?: false
 }

@@ -84,18 +84,19 @@ object FastAHRSFilter {
 
     /**
      * Default:
-     * f(x) := lambda * x
-     * with lambda = 0.5 for small x
+     *      f(x) := lambda * x
+     *                  with lambda = 0.5 for small x
+     *
      * Non-linear:
-     * f(x) := lambda * x + tau * x^2
-     * with f(x) = lambda * x for small x
-     * and f(x) = 10 * lambda * x for x about 20°
+     *      f(x) := lambda * x + tau * x^2
+     *                  with f(x) = lambda * x for small x
+     *                  and f(x) = 10 * lambda * x for x about 20°
      *
      * 20° --> x = 2 PI / 360° * 20° = PI/9
-     * f'(0) = lambda
-     * f(0) = 0
-     * f(PI/9) = 10 * lambda * PI/9 = lambda * PI/9 + tau * (PI/9)^2
-     * tau = lambda * 81 / PI
+     *      f'(0) = lambda
+     *      f(0) = 0
+     *      f(PI/9) = 10 * lambda * PI/9 = lambda * PI/9 + tau * (PI/9)^2
+     *      tau = lambda * 81 / PI
      */
     private fun f(alpha: Double): Double {
         return (alpha * (LAMBDA1 + alpha * TAU1)).coerceAtMost(LAMBDA2)

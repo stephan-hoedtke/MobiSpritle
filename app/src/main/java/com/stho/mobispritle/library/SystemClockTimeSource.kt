@@ -1,4 +1,4 @@
-package com.stho.myorientation.library
+package com.stho.mobispritle.library
 
 import android.os.SystemClock
 

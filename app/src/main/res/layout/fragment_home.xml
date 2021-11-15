@@ -62,13 +62,4 @@
         android:textSize="@dimen/text_size"
         android:text="@string/label_info" />
 
-    <TextView
-        android:id="@+id/debugInfo"
-        android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/label_debug_info"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

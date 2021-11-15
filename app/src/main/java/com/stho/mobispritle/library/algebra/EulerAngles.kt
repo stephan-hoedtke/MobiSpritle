@@ -1,7 +1,4 @@
-package com.stho.myorientation.library.algebra
-
-import com.stho.mobispritle.library.algebra.Quaternion
-import com.stho.mobispritle.library.algebra.RotationMatrix
+package com.stho.mobispritle.library.algebra
 
 /**
  * Euler angles in radians (x,y,z) and degree (azimuth, pitch, roll)
@@ -37,13 +34,7 @@ data class EulerAngles(val x: Double, val y: Double, val z: Double) {
     fun toQuaternion(): Quaternion =
         Rotation.eulerAnglesToQuaternion(this)
 
-    fun toRotationMatrix(): RotationMatrix =
-        Rotation.eulerAnglesToRotationMatrix(this)
-
     companion object {
-
-        val default: EulerAngles =
-            EulerAngles(0.0, 0.0, 0.0)
 
         fun fromAzimuthPitchRoll(azimuth: Double, pitch: Double, roll: Double): EulerAngles =
             EulerAngles(
