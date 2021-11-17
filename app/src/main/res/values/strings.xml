@@ -3,4 +3,6 @@
     <string name="label_target">Target</string>
     <string name="label_reset">Reset</string>
     <string name="label_info">Info</string>
+    <string name="label_plus">Plus</string>
+    <string name="label_minus">Minus</string>
 </resources>

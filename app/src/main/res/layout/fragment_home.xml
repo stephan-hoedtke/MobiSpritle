@@ -11,33 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineBottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.80" />
+        app:layout_constraintGuide_percent="0.75" />
 
     <com.stho.mobispritle.BubbleView
         android:id="@+id/bubble"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/text_margin"
         app:layout_constraintTop_toTopOf="@id/guidelineTop"
         app:layout_constraintBottom_toBottomOf="@id/guidelineBottom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:layout_width="@dimen/target_size"
-        android:layout_height="@dimen/target_size"
-        app:layout_constraintTop_toTopOf="@id/guidelineTop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/target"
-        android:contentDescription="@string/label_target" />
 
     <ImageView
         android:id="@+id/reset"
@@ -47,6 +37,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/reset"
         android:contentDescription="@string/label_reset" />
 
@@ -61,5 +54,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="@dimen/text_size"
         android:text="@string/label_info" />
+
+    <ImageView
+        android:layout_width="@dimen/target_size"
+        android:layout_height="@dimen/target_size"
+        app:layout_constraintBottom_toTopOf="@id/bubble"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/target"
+        android:contentDescription="@string/label_target" />
+
+    <ImageView
+        android:id="@+id/plus"
+        android:layout_width="@dimen/button_size"
+        android:layout_height="@dimen/button_size"
+        app:layout_constraintTop_toTopOf="@id/reset"
+        app:layout_constraintBottom_toBottomOf="@id/reset"
+        app:layout_constraintStart_toStartOf="@id/reset"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/plus"
+        android:alpha="0.7"
+        android:contentDescription="@string/label_plus" />
+
+    <ImageView
+        android:id="@+id/minus"
+        android:layout_width="@dimen/button_size"
+        android:layout_height="@dimen/button_size"
+        app:layout_constraintTop_toTopOf="@id/reset"
+        app:layout_constraintBottom_toBottomOf="@id/reset"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/reset"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/minus"
+        android:alpha="0.7"
+        android:contentDescription="@string/label_minus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,18 +1,15 @@
 package com.stho.mobispritle
 
-import android.graphics.Bitmap
-import android.view.GestureDetector
-import android.view.GestureDetector.SimpleOnGestureListener
-import android.view.MotionEvent
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import com.stho.mobispritle.library.algebra.Degree
-import kotlin.math.atan2
 import kotlin.math.roundToInt
 
 /**
@@ -23,29 +20,21 @@ import kotlin.math.roundToInt
  */
 class BubbleView : View {
 
-    interface OnRotateListener {
-        fun onRotate(delta: Double)
-    }
-
-    interface OnDoubleTapListener {
-        fun onDoubleTap()
-    }
-
-    private var transformation: Matrix? = null
     private var rotateListener: OnRotateListener? = null
     private var doubleTapListener: OnDoubleTapListener? = null
-    private var previousAngle = 0.0
+
+    private var transformation: Matrix? = null
+    private var gestureDetector: FlingingGestureDetector? = null
+
     private var bubbleAngle = 17.0
     private var ringAngle = 13.0
     private var glassAdjustmentAngle = 0.0
-    private var isMirror: Boolean = false
     private var isTop: Boolean = false
     private var ring: Bitmap? = null
     private var glass: Bitmap? = null
     private var marks: Bitmap? = null
     private var bubbleTop: Bitmap? = null
     private var bubbleMiddle: Bitmap? = null
-    private var gestureDetector: GestureDetector? = null
 
     constructor(context: Context?) : super(context) {
         setupGestureDetector()
@@ -60,20 +49,17 @@ class BubbleView : View {
     }
 
     private fun setupGestureDetector() {
-        gestureDetector = GestureDetector(context, object : SimpleOnGestureListener() {
-            override fun onDoubleTap(e: MotionEvent): Boolean {
-                this@BubbleView.onDoubleTap()
-                return super.onDoubleTap(e)
-            }
-        })
+        gestureDetector = FlingingGestureDetector(
+            context,
+            listener = CircleViewGestureListener(this, ::onRotate, ::onDoubleTap))
     }
 
     private fun onRotate(delta: Double) {
-        if (rotateListener != null) rotateListener!!.onRotate(delta)
+        rotateListener?.onRotate(delta)
     }
 
     private fun onDoubleTap() {
-        if (doubleTapListener != null) doubleTapListener!!.onDoubleTap()
+        doubleTapListener?.onDoubleTap()
     }
 
     fun setOnRotateListener(listener: OnRotateListener?) {
@@ -108,13 +94,6 @@ class BubbleView : View {
     private val glassAngle: Double
         get() = ringAngle + glassAdjustmentAngle
 
-    fun setIsMirror(value: Boolean) {
-        if (isMirror != value) {
-            isMirror = value
-            invalidate()
-        }
-    }
-
     fun setIsTop(value: Boolean) {
         if (isTop != value) {
             isTop = value
@@ -122,29 +101,10 @@ class BubbleView : View {
         }
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         gestureDetector!!.onTouchEvent(event)
-        onTouchEventRotationDragHandler(event)
         return true
-    }
-
-    private fun onTouchEventRotationDragHandler(event: MotionEvent) {
-        when (event.action) {
-            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> previousAngle =
-                getAngle(event.x, event.y)
-            MotionEvent.ACTION_MOVE -> {
-                val alpha = getAngle(event.x, event.y)
-                val delta = ensureAngleInRange(alpha - previousAngle)
-                previousAngle = alpha
-                if (isMirror) {
-                    onRotate(-delta)
-                } else {
-                    onRotate(delta)
-                }
-            }
-        }
     }
 
     private fun ensureMatrix(): Matrix
@@ -172,17 +132,11 @@ class BubbleView : View {
         // ring + degrees + numbers
         matrix.setTranslate(dx, dy)
         matrix.postRotate(ringAngle.toFloat(), px, py)
-        if (isMirror) {
-            matrix.postScale(-1f, 1f, px, py)
-        }
         canvas.drawBitmap(ring!!, matrix, null)
 
         // glass
         matrix.setTranslate(dx, dy)
         matrix.postRotate(glassAngle.toFloat(), px, py)
-        if (isMirror) {
-            matrix.postScale(-1f, 1f, px, py)
-        }
         canvas.drawBitmap(glass!!, matrix, null)
 
         // bubble
@@ -197,9 +151,6 @@ class BubbleView : View {
         matrix.setTranslate(dx, dy)
         matrix.postTranslate(tx, ty)
         matrix.postRotate(glassAngle.toFloat(), px, py)
-        if (isMirror) {
-            matrix.postScale(-1f, 1f, px, py)
-        }
         when {
             isTop -> canvas.drawBitmap(bubbleTop!!, matrix, null)
             else -> canvas.drawBitmap(bubbleMiddle!!, matrix, null)
@@ -208,9 +159,6 @@ class BubbleView : View {
         // marks
         matrix.setTranslate(dx, dy)
         matrix.postRotate(glassAngle.toFloat(), px, py)
-        if (isMirror) {
-            matrix.postScale(-1f, 1f, px, py)
-        }
         canvas.drawBitmap(marks!!, matrix, null)
     }
 
@@ -225,28 +173,11 @@ class BubbleView : View {
         return transformation!!
     }
 
-    private fun getAngle(x: Float, y: Float): Double {
-        val cx = (width shr 1).toFloat()
-        val cy = (height shr 1).toFloat()
-        return atan2((y - cy).toDouble(), (x - cx).toDouble()) * 180 / Math.PI + 90
-    }
-
     companion object {
 
         private fun createBitmap(context: Context, resourceId: Int, size: Int): Bitmap {
             val bitmap = BitmapFactory.decodeResource(context.resources, resourceId)
             return Bitmap.createScaledBitmap(bitmap, size, size, false)
-        }
-
-        private fun ensureAngleInRange(delta: Double): Double {
-            var x = delta
-            while (x > 180) {
-                x -= 360.0
-            }
-            while (x < -180) {
-                x += 360.0
-            }
-            return x
         }
     }
 }

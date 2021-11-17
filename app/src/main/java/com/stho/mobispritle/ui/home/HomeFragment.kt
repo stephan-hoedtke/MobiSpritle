@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.stho.mobispritle.BubbleView
-import com.stho.mobispritle.Mode
-import com.stho.mobispritle.ViewAnimation
+import com.stho.mobispritle.*
 import com.stho.mobispritle.databinding.FragmentHomeBinding
 import com.stho.mobispritle.library.OrientationSensorListener
 
@@ -29,17 +27,19 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.reset.setOnClickListener { homeViewModel.reset() }
-        binding.bubble.setOnDoubleTapListener(object : BubbleView.OnDoubleTapListener {
+        binding.bubble.setOnDoubleTapListener(object : OnDoubleTapListener {
             override fun onDoubleTap() {
                 homeViewModel.reset()
             }
         })
-        binding.bubble.setOnRotateListener(object : BubbleView.OnRotateListener {
+        binding.bubble.setOnRotateListener(object : OnRotateListener {
             override fun onRotate(delta: Double) {
-                homeViewModel.rotate(-delta)
+                homeViewModel.rotate(delta)
             }
 
         })
+        binding.plus.setOnClickListener { homeViewModel.rotate(+1.0) }
+        binding.minus.setOnClickListener { homeViewModel.rotate(-1.0) }
         infoAnimation = ViewAnimation.build(binding.info)
         resetButtonAnimation = ViewAnimation.build(binding.reset)
         return binding.root
@@ -107,7 +107,6 @@ class HomeFragment : Fragment() {
             Mode.Portrait -> {
                 binding.bubble.apply {
                     setIsTop(true)
-                    setIsMirror(false)
                     setGlassAdjustmentAngle(0.0)
                     setBubbleAngle(gamma)
                 }
@@ -115,7 +114,6 @@ class HomeFragment : Fragment() {
             Mode.LandscapePositive -> {
                 binding.bubble.apply {
                     setIsTop(true)
-                    setIsMirror(false)
                     setGlassAdjustmentAngle(-90.0)
                     setBubbleAngle(gamma)
                 }
@@ -123,7 +121,6 @@ class HomeFragment : Fragment() {
             Mode.LandscapeNegative -> {
                 binding.bubble.apply {
                     setIsTop(true)
-                    setIsMirror(false)
                     setGlassAdjustmentAngle(90.0)
                     setBubbleAngle(gamma)
                 }
@@ -131,7 +128,6 @@ class HomeFragment : Fragment() {
             Mode.Below -> {
                 binding.bubble.apply {
                     setIsTop(false)
-                    setIsMirror(false)
                     setGlassAdjustmentAngle(-90.0)
                     setBubbleAngle(gamma)
                 }
@@ -139,7 +135,6 @@ class HomeFragment : Fragment() {
             Mode.Above -> {
                 binding.bubble.apply {
                     setIsTop(false)
-                    setIsMirror(false)
                     setGlassAdjustmentAngle(90.0)
                     setBubbleAngle(gamma)
                 }
@@ -147,7 +142,6 @@ class HomeFragment : Fragment() {
             Mode.TopDown -> {
                 binding.bubble.apply {
                     setIsTop(true)
-                    setIsMirror(false)
                     setGlassAdjustmentAngle(180.0)
                     setBubbleAngle(gamma)
                 }
