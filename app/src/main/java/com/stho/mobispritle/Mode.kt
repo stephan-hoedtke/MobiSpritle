@@ -4,7 +4,8 @@ enum class Mode {
     Portrait,
     LandscapeNegative,
     LandscapePositive,
-    Below,
+    BelowParallel,
+    BelowOrthogonal,
     Above,
     TopDown,
 }

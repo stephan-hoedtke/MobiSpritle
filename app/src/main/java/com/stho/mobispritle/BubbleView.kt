@@ -27,8 +27,8 @@ class BubbleView : View {
     private var gestureDetector: FlingingGestureDetector? = null
 
     private var bubbleAngle = 17.0
+    private var glassAngle = 13.0
     private var ringAngle = 13.0
-    private var glassAdjustmentAngle = 0.0
     private var isTop: Boolean = false
     private var ring: Bitmap? = null
     private var glass: Bitmap? = null
@@ -84,15 +84,12 @@ class BubbleView : View {
         }
     }
 
-    fun setGlassAdjustmentAngle(value: Double) {
-        if (glassAdjustmentAngle != value) {
-            glassAdjustmentAngle = value
+    fun setGlassAngle(value: Double) {
+        if (glassAngle != value) {
+            glassAngle = value
             invalidate()
         }
     }
-
-    private val glassAngle: Double
-        get() = ringAngle + glassAdjustmentAngle
 
     fun setIsTop(value: Boolean) {
         if (isTop != value) {

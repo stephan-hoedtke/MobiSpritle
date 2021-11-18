@@ -1,20 +1,17 @@
 package com.stho.mobispritle.ui.home
 
 import com.stho.mobispritle.Mode
+import com.stho.mobispritle.library.algebra.Degree
 import com.stho.mobispritle.library.algebra.Quaternion
 import com.stho.mobispritle.library.algebra.Vector
-import com.stho.mobispritle.library.algebra.Degree
 
 class BubbleCalculator(quaternion: Quaternion) {
 
     private val g = Vector(0.0, 0.0, -1.0).rotateBy(quaternion.conjugate())
 
     fun getForceMode(): Mode? {
-        val x2 by lazy { g.x * g.x }
-        val y2 by lazy { g.y * g.y }
-        val z2 by lazy { g.z * g.z }
         return when {
-            g.z < -THRESHOLD -> Mode.Below
+            g.z < -THRESHOLD -> Mode.BelowParallel
             g.z > +THRESHOLD -> Mode.Above
             g.x < -THRESHOLD -> Mode.LandscapeNegative
             g.x > +THRESHOLD -> Mode.LandscapePositive
@@ -64,15 +61,20 @@ class BubbleCalculator(quaternion: Quaternion) {
                 val t = g.x * cosAlpha - g.y * sinAlpha
                 -Degree.arcTan2(-s, -t)
             }
-            Mode.Below -> {
-                val s = g.x * sinAlpha + g.y * cosAlpha
-                val r = -g.z
-                -Degree.arcTan2(s, r)
+            Mode.BelowParallel -> {
+                val s = g.y * cosAlpha + g.z * sinAlpha
+                val t = g.y * sinAlpha - g.z * cosAlpha
+                Degree.arcTan2(s, t)
+            }
+            Mode.BelowOrthogonal -> {
+                val s = g.x * cosAlpha + g.z * sinAlpha
+                val t = g.x * sinAlpha - g.z * cosAlpha
+                -Degree.arcTan2(s, t)
             }
             Mode.Above -> {
-                val s = g.x * sinAlpha + g.y * cosAlpha
-                val r = g.z
-                -Degree.arcTan2(-s, r)
+                val s = g.y * cosAlpha + g.z * sinAlpha
+                val t = g.y * sinAlpha - g.z * cosAlpha
+                Degree.arcTan2(s, -t)
             }
             Mode.TopDown -> {
                 val t = g.x * sinAlpha + g.y * cosAlpha
@@ -81,6 +83,38 @@ class BubbleCalculator(quaternion: Quaternion) {
             }
         }
     }
+
+    fun getTilt(mode: Mode): Double =
+        when (mode) {
+            Mode.BelowParallel -> {
+                val v = g.dot(Vector(0.0, 0.0, -1.0))
+                -Degree.arcCos(v)
+            }
+            Mode.BelowOrthogonal -> {
+                val v = g.dot(Vector(1.0, 0.0, -1.0))
+                Degree.arcCos(v)
+            }
+            Mode.LandscapeNegative -> {
+                val v = g.dot(Vector(0.0, 1.0, 0.0))
+                90.0 - Degree.arcCos(v)
+            }
+            Mode.LandscapePositive -> {
+                val v = g.dot(Vector(0.0, 1.0, 0.0))
+                Degree.arcCos(v) - 90.0
+            }
+            Mode.Above -> {
+                val v = g.dot(Vector(0.0, 0.0, 1.0))
+                Degree.arcCos(v)
+            }
+            Mode.Portrait -> {
+                val v = g.dot(Vector(1.0, 0.0, 0.0))
+                Degree.arcCos(v) - 90.0
+            }
+            Mode.TopDown -> {
+                val v = g.dot(Vector(1.0, 0.0, 0.0))
+                90.0 - Degree.arcCos(v)
+            }
+        }
 
     companion object {
         private const val THRESHOLD = 0.8

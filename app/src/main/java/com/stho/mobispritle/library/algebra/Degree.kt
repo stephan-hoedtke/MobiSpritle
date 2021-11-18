@@ -15,6 +15,9 @@ object Degree {
     fun arcTan2(y: Double, x: Double): Double =
         Math.toDegrees(kotlin.math.atan2(y, x))
 
+    fun arcCos(x: Double): Double =
+        Math.toDegrees(kotlin.math.acos(x))
+
     fun normalize(degree: Double): Double =
         degree.IEEErem(360.0).let {
             when {

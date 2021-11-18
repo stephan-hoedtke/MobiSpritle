@@ -32,8 +32,8 @@ class BubbleCalculatorUnitTest {
 
     @Test
     fun getForceMode_isCorrect() {
-        getForceMode_isCorrect(azimuth = 0.0, pitch = 0.0, roll = 0.0, expectedMode = Mode.Below)
-        getForceMode_isCorrect(azimuth = 2.0, pitch = 2.0, roll = 2.0, expectedMode = Mode.Below)
+        getForceMode_isCorrect(azimuth = 0.0, pitch = 0.0, roll = 0.0, expectedMode = Mode.BelowParallel)
+        getForceMode_isCorrect(azimuth = 2.0, pitch = 2.0, roll = 2.0, expectedMode = Mode.BelowParallel)
         getForceMode_isCorrect(azimuth = 60.0, pitch = 2.0, roll = -88.0, expectedMode = Mode.LandscapePositive)
         getForceMode_isCorrect(azimuth = -60.0, pitch = 2.0, roll = 88.0, expectedMode = Mode.LandscapeNegative)
         getForceMode_isCorrect(azimuth = 2.0, pitch = 178.0, roll = -2.0, expectedMode = Mode.Above)
@@ -55,10 +55,10 @@ class BubbleCalculatorUnitTest {
         //      pitch moves the top downwards (z < 0)
         //      roll moves the left side upwards (y > 0)
 
-        gamma_isCorrect(Mode.Below, alpha = 0.0, azimuth = 0.0, pitch = 0.0, roll = 0.0, expectedGammaValue = 0.0)
-        gamma_isCorrect(Mode.Below, alpha = 0.0, azimuth = 0.0, pitch = -1.0, roll = 0.0, expectedGammaValue = 1.0)
-        gamma_isCorrect(Mode.Below, alpha = 2.0, azimuth = 0.0, pitch = -1.0, roll = 0.0, expectedGammaValue = cosSin(2.0, -1.0))
-        gamma_isCorrect(Mode.Below, alpha = 4.0, azimuth = 10.0, pitch = -2.0, roll = 0.0, expectedGammaValue = cosSin(4.0, -2.0))
+        gamma_isCorrect(Mode.BelowParallel, alpha = 0.0, azimuth = 0.0, pitch = 0.0, roll = 0.0, expectedGammaValue = 0.0)
+        gamma_isCorrect(Mode.BelowParallel, alpha = 0.0, azimuth = 0.0, pitch = -1.0, roll = 0.0, expectedGammaValue = 1.0)
+        gamma_isCorrect(Mode.BelowParallel, alpha = 2.0, azimuth = 0.0, pitch = -1.0, roll = 0.0, expectedGammaValue = cosSin(2.0, -1.0))
+        gamma_isCorrect(Mode.BelowParallel, alpha = 4.0, azimuth = 10.0, pitch = -2.0, roll = 0.0, expectedGammaValue = cosSin(4.0, -2.0))
 
         gamma_isCorrect(Mode.Portrait, alpha = 0.0, azimuth = 0.0, pitch = -90.0, roll = 0.0, expectedGammaValue = 0.0)
         gamma_isCorrect(Mode.Portrait, alpha = 0.0, azimuth = 90.0, pitch = -89.0, roll = 90.0, expectedGammaValue = 1.0)
